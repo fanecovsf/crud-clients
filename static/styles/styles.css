@@ -1,6 +1,6 @@
 body {
     text-align: center;
-    background-color: #5b9bd5;
+    background-color: #004415;
     color: #fff;
     font-family: Arial, sans-serif;
 }
@@ -28,11 +28,11 @@ body {
 .table-1 th,
 .table-1 td {
     padding: 10px;
-    border: 1px solid #ffc000;
+    border: 1px solid #268200;
 }
 
 .table-1 th {
-    background-color: #ffc000;
+    background-color: #268200;
     color: #fff;
 }
 
@@ -54,7 +54,7 @@ body {
 .pagination li a {
     display: block;
     padding: 5px 10px;
-    background-color: #ffc000;
+    background-color: #268200;
     color: #fff;
     text-decoration: none;
     border-radius: 5px;
@@ -80,13 +80,20 @@ body {
 }
 
 .value-read .form-control{
-    background-color: #5b9bd5;
+    background-color: #004415;
     color: #fff;
-    border-color: #5b9bd5;
+    border-color: #004415;
 }
 
 .value .form-control[readonly] {
-    background-color: #5b9bd5;
+    background-color: #004415;
 }
 
-
+.edit-button {
+    display: inline-block;
+    padding: 8px 12px;
+    background-color: #268200;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+}
