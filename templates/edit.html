@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <title>Editar cliente {{cliente.nome}}</title>
+</head>
+<body>
+
+    <h1 style="text-align: center;">Editar cliente {{cliente.nome}}</h1>
+    <br>
+
+    <form action="/edit/{{ cliente.codigo }}" class="container" method="post" style="justify-content: center;">
+        <div class="row">
+            <div class="readonly-value">
+                <input type="text" name="codigo" id="codigo" placeholder="Código" class="form-control" value="{{cliente.codigo}}" readonly>
+            </div>
+            <div class="readonly-value">
+                <input type="text" name="nome" id="nome" placeholder="Nome" class="form-control" value="{{cliente.nome}}" readonly>
+            </div>
+            <div class="readonly-value">
+                <input type="text" name="modelo" id="modelo" placeholder="Modelo de negócio" class="form-control" value="{{cliente.modelo_de_negocio}}">
+            </div>
+            <div class="readonly-value">
+                <input type="text" name="tipo_cliente" id="tipo_cliente" placeholder="Tipo de cliente" class="form-control" value="{{cliente.tipo_de_cliente}}">
+            </div>
+            <br>
+            <div>
+                <button type="submit" class="btn btn-send">Enviar</button>
+            </div>
+        </div>
+    </form>
+    
+</body>
+</html>
