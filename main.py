@@ -6,16 +6,21 @@ from models.models import db, Cliente
 app = Flask(__name__, static_folder='static', template_folder='templates')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:pRxI65oIubsdTlf@4.228.57.67:5432/db_vibra'
 
-
 @app.route('/')
 def table():
-    page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page', per_page=100)
-    clientes = Cliente.query.offset(offset).limit(per_page).all()
+    search_term = request.args.get('search')
+    page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page', per_page='100')
 
-    pagination = Pagination(page=page, total=Cliente.query.count(), record_name='clientes', per_page=per_page, css_framework='bootstrap4')
+    if search_term:
+        clientes = Cliente.query.filter(Cliente.nome.ilike(f'%{search_term}%')).offset(offset).limit(per_page).all()
+        total = Cliente.query.filter(Cliente.nome.ilike(f'%{search_term}%')).count()
+    else:
+        clientes = Cliente.query.offset(offset).limit(per_page).all()
+        total = Cliente.query.count()
+
+    pagination = Pagination(page=page, total=total, record_name='clientes', per_page=per_page, css_framework='bootstrap4')
 
     return render_template('index.html', clientes=clientes, pagination=pagination)
-
 
 @app.route('/edit/<codigo>', methods=['GET', 'POST'])
 def edit(codigo):

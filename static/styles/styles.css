@@ -1,0 +1,92 @@
+body {
+    text-align: center;
+    background-color: #5b9bd5;
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.div-table {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.table-1 {
+    border-collapse: collapse;
+    margin: auto;
+    width: 80%;
+}
+
+.table-1 th,
+.table-1 td {
+    padding: 10px;
+    border: 1px solid #ffc000;
+}
+
+.table-1 th {
+    background-color: #ffc000;
+    color: #fff;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    word-wrap: break-word;
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+.pagination li {
+    display: inline-block;
+    margin: 0 5px;
+}
+
+.pagination li a {
+    display: block;
+    padding: 5px 10px;
+    background-color: #ffc000;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.pagination li.active a {
+    background-color: #fff;
+    color: #5b9bd5;
+}
+
+.form-control[readonly] {
+    background-color: #f2f2f2;
+}
+
+.form-control {
+    margin-bottom: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.label-edit {
+    font-weight: bold;
+}
+
+.value-read .form-control{
+    background-color: #5b9bd5;
+    color: #fff;
+    border-color: #5b9bd5;
+}
+
+.value .form-control[readonly] {
+    background-color: #5b9bd5;
+}
+
+
