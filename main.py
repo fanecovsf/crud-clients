@@ -10,6 +10,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:pRxI65oIubsdTlf@4
 
 
 @app.route('/')
+def init():
+    return 'Online'
+
+
+@app.route('/clientes')
 def table():
     search_term = request.args.get('search')
     page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page', per_page='100')
@@ -26,7 +31,7 @@ def table():
     return render_template('index.html', clientes=clientes, pagination=pagination)
 
 
-@app.route('/edit/<codigo>', methods=['GET', 'POST'])
+@app.route('/clientes/edit/<codigo>', methods=['GET', 'POST'])
 def edit(codigo):
     cliente = Cliente.query.get(codigo)
     if request.method == 'POST':
@@ -49,5 +54,5 @@ if __name__ == '__main__':
                 cursor.execute("SELECT 1")
                 cursor.close()
 
-    app.run(debug=True, host='0.0.0.0', port=3000)
+    app.run(debug=False, host='0.0.0.0', port=3000)
 
