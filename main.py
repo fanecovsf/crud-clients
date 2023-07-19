@@ -8,6 +8,9 @@ from sqlalchemy import event
 app = Flask(__name__, static_folder='static', template_folder='templates')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:pRxI65oIubsdTlf@4.228.57.67:5432/db_vibra'
 
+app.config['SQLALCHEMY_POOL_SIZE'] = 10
+app.config['SQLALCHEMY_POOL_TIMEOUT'] = 30
+
 db.init_app(app=app)
 
 with app.app_context():
