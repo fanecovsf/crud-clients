@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, Response
+from flask import Flask, render_template, request, redirect, url_for
 from flask_paginate import Pagination, get_page_args
 from models.models import db, Cliente
 from sqlalchemy import exc
@@ -7,6 +7,16 @@ from sqlalchemy import event
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:pRxI65oIubsdTlf@4.228.57.67:5432/db_vibra'
+
+db.init_app(app=app)
+
+with app.app_context():
+    @event.listens_for(db.engine, "engine_connect")
+    def on_connect(dbapi_connection, connection_record):
+        if isinstance(dbapi_connection, exc.DBAPIError):
+            cursor = dbapi_connection.cursor()
+            cursor.execute("SELECT 1")
+            cursor.close()
 
 
 @app.route('/')
@@ -44,15 +54,5 @@ def edit(codigo):
 
 
 if __name__ == '__main__':
-    db.init_app(app=app)
-
-    with app.app_context():
-        @event.listens_for(db.engine, "engine_connect")
-        def on_connect(dbapi_connection, connection_record):
-            if isinstance(dbapi_connection, exc.DBAPIError):
-                cursor = dbapi_connection.cursor()
-                cursor.execute("SELECT 1")
-                cursor.close()
-
     app.run(debug=False, host='0.0.0.0', port=3000)
 
