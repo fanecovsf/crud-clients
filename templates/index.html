@@ -1,50 +1,65 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="{{ url_for('static', filename='styles/styles.css') }}" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="{{ url_for('static', filename='styles/styles.css') }}"
+      rel="stylesheet"
+    />
     <title>Edição de clientes</title>
-</head>
-<body>
-    <h1 style="text-align: center;">Edição de clientes</h1>
-    <br>
-    <div style="text-align: center;">
-        <form method="GET" action="{{ url_for('table') }}" style="margin-bottom: 20px;">
-            <input type="text" name="search" placeholder="Digite o nome do cliente">
+  </head>
+  <body>
+    <div>
+      <h1>Edição de clientes</h1>
+      <section class="form-search">
+        <form
+          class="form-elements"
+          method="GET"
+          action="{{ url_for('table') }}"
+        >
+          <div>
+            <input
+              type="text"
+              name="search"
+              placeholder="🔍 Digite o nome do cliente"
+            />
+          </div>
+          <div>
             <button type="submit">Pesquisar</button>
+          </div>
         </form>
-    </div>
-    <div class="div-table" style="justify-content: center; text-align: center;">
-    <table class="table-1" style="text-align: center; justify-content: center;">
-        <thead>
+      </section>
+      <section class="div-table">
+        <table class="table-1">
+          <thead>
             <tr>
-                <th>Código</th>
-                <th>Nome</th>
-                <th>Modelo de negócio</th>
-                <th>Tipo de cliente</th>
+              <th>Código</th>
+              <th>Nome</th>
+              <th>Modelo de negócio</th>
+              <th>Tipo de cliente</th>
+              <th></th>
             </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
             {% for c in clientes %}
             <tr>
-                
-                <td>{{c.codigo}}</td>
-                <td>{{c.nome}}</td>
-                <td>{{c.modelo_de_negocio}}</td>
-                <td>{{c.tipo_de_cliente}}</td>
-                <td>
-                    <a href="/clientes/edit/{{c.codigo}}" class="edit-button">Editar</a>
-                </td>
-                
+              <td>{{c.codigo}}</td>
+              <td>{{c.nome}}</td>
+              <td>{{c.modelo_de_negocio}}</td>
+              <td>{{c.tipo_de_cliente}}</td>
+              <td>
+                <a href="/clientes/edit/{{c.codigo}}" class="edit-button"
+                  >Editar</a
+                >
+              </td>
             </tr>
             {% endfor %}
-        </tbody>
-    </table>
-    </div>
+          </tbody>
+        </table>
+      </section>
 
-    <div class="pagination">
-        {{ pagination.links }}
+      <div class="pagination">{{ pagination.links }}</div>
     </div>
-</body>
+  </body>
 </html>
