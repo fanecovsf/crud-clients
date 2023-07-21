@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="{{ url_for('static', filename='styles/styles.css') }}"
+      rel="stylesheet"
+    />
+    <title>Edição de clientes</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Edição de placas</h1>
+      <section class="div-table">
+        <table class="table-1">
+          <thead>
+            <tr>
+              <th>Placa</th>
+              <th>Classificação</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for p in placas %}
+            <tr>
+              <td>{{p.placa}}</td>
+              <td>{{p.classificacao}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </section>
+      <div class="pagination">{{ pagination.links }}</div>
+    </div>
+  </body>
+</html>

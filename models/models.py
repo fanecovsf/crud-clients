@@ -17,3 +17,31 @@ class Cliente(db.Model):
         self.modelo_de_negocio = modelo_de_negocio
         self.tipo_cliente = tipo_cliente
 
+
+class PlacasMinalbaMongo(db.Model):
+    __tablename__ = 'Viagens'
+    __table_args__ = {'schema': 'public'}
+    __bind_key__ = 'db_minalba_mongodb'
+    
+    id = db.Column(db.String(1000), primary_key=True)
+    idVeiculo = db.Column(db.String(1000))
+    nomeEmbarcador = db.Column(db.String(1000))
+
+    def __init__(self, idVeiculo, id, nomeEmbarcador):
+        self.id = id
+        self.idVeiculo = idVeiculo
+        self.nomeEmbarcador = nomeEmbarcador
+
+
+class PlacasMinalba(db.Model):
+    __tablename__ = 'tb_placas'
+    __table_args__ = {'schema': 'sc_placa'}
+    __bind_key__ = 'db_minalba'
+
+    placa = db.Column(db.String(255), primary_key=True)
+    classificacao = db.Column(db.String(255))
+
+    def __init__(self, placa, classificacao):
+        self.placa = placa
+        self.classificacao = classificacao
+
