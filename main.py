@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_paginate import Pagination, get_page_args
-from models.models import Cliente, PlacasMinalbaMongo, PlacasMinalba, engine_1, session_1, session_2, session_3
+from models.models import Cliente, PlacasMinalbaMongo, PlacasMinalba, engine_1, engine_3, session_1, session_2, session_3
 from sqlalchemy import exc
 from sqlalchemy import event
 from threading import Thread
+from sqlmodel.ext.asyncio.session import AsyncSession
+import asyncio
 import time
 
 
@@ -81,18 +83,21 @@ def edit_placa(placa):
 
 #Util
 #------------------------------------------------------------------------------------------------------------------------------------------------------------
-def fill_placas_minalba():
+async def fill_placas_minalba():
     while True:
-        time.sleep(7200)
-        placas_distintas = session_2.query(PlacasMinalbaMongo.idVeiculo).filter(PlacasMinalbaMongo.nomeEmbarcador != 'MINALBA' and PlacasMinalbaMongo.nomeEmbarcador != '').distinct().all()
+        await asyncio.sleep(7200)
+        placas_distintas = session_2.query(PlacasMinalbaMongo.idVeiculo).filter(
+            PlacasMinalbaMongo.nomeEmbarcador != 'MINALBA' and PlacasMinalbaMongo.nomeEmbarcador != ''
+        ).distinct().all()
 
-        for placa in placas_distintas:
-            placa_existente = session_3.query(PlacasMinalba).filter_by(placa=placa[0]).first()
-            if not placa_existente:
-                placa_nova = PlacasMinalba(placa=placa[0], classificacao=None)
-                session_3.add(placa_nova)
+        async with AsyncSession(engine_3) as session_3:
+            for placa in placas_distintas:
+                placa_existente = await session_3.query(PlacasMinalba).filter_by(placa=placa[0]).first()
+                if not placa_existente:
+                    placa_nova = PlacasMinalba(placa=placa[0], classificacao=None)
+                    session_3.add(placa_nova)
 
-        session_3.commit()
+            await session_3.commit()
 
 
 if __name__ == '__main__':

@@ -1,9 +1,8 @@
 from sqlmodel import Field, SQLModel, create_engine, Session
-from sqlmodel.ext.asyncio.session import AsyncSession
 
 #Constantes
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------
-DATABASE_URL1 = 'postgresql://postgres:pRxI65oIubsdTlf@4.228.57.67:5432/db_vibra'
+DATABASE_URL1 = 'postgresql+asyncpg://postgres:pRxI65oIubsdTlf@4.228.57.67:5432/db_vibra'
 DATABASE_URL2 = 'postgresql://postgres:pRxI65oIubsdTlf@4.228.57.67:5432/db_minalba_mongodb'
 DATABASE_URL3 = 'postgresql://postgres:pRxI65oIubsdTlf@4.228.57.67:5432/db_minalba'
 
