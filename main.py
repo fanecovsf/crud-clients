@@ -80,7 +80,7 @@ def placas_minalba():
 #Util
 #------------------------------------------------------------------------------------------------------------------------------------------------------------
 def fill_placas_minalba():
-    while True():
+    while True:
         time.sleep(7200)
         placas_distintas = db.session.query(PlacasMinalbaMongo.idVeiculo).filter(PlacasMinalbaMongo.nomeEmbarcador != 'MINALBA' and PlacasMinalbaMongo.nomeEmbarcador != '').distinct().all()
 
