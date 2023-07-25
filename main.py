@@ -68,14 +68,30 @@ def edit(codigo):
 
 @app.route('/placas-minalba')
 def placas_minalba():
+    search_term = request.args.get('search')
     page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page', per_page='100')
 
-    placas = PlacasMinalba.query.offset(offset).limit(per_page).all()
-    total = PlacasMinalba.query.count()
+    if search_term:
+        placas = PlacasMinalba.query.filter(PlacasMinalba.placa.ilike(f'%{search_term}%')).offset(offset).limit(per_page).all()
+        total = PlacasMinalba.query.filter(PlacasMinalba.placa.ilike(f'%{search_term}%')).count()
+    else:
+        placas = PlacasMinalba.query.offset(offset).limit(per_page).all()
+        total = PlacasMinalba.query.count()
 
     pagination = Pagination(page=page, total=total, record_name='placas', per_page=per_page, css_framework='bootstrap4')
 
     return render_template('placas-minalba.html', placas=placas, pagination=pagination)
+
+
+@app.route('/placas-minalba/edit/<placa>', methods=['GET', 'POST'])
+def edit_placa(placa):
+    placa = PlacasMinalba.query.get(placa)
+    if request.method == 'POST':
+        placa.classificacao = request.form['classificacao']
+        db.session.commit()
+        return redirect(url_for('placas_minalba'))
+    
+    return render_template('edit-placas-minalba.html', placa=placa)
 
 #Util
 #------------------------------------------------------------------------------------------------------------------------------------------------------------
