@@ -19,7 +19,7 @@ app.config['SQLALCHEMY_BINDS'] = {
 }
 
 app.config['SQLALCHEMY_POOL_SIZE'] = 10
-app.config['SQLALCHEMY_POOL_TIMEOUT'] = 30
+app.config['SQLALCHEMY_POOL_TIMEOUT'] = 300
 
 db.init_app(app=app)
 
