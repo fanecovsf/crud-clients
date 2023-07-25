@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_paginate import Pagination, get_page_args
-#from models.models import db, Cliente, PlacasMinalbaMongo, PlacasMinalba
-from models.models2 import Cliente, PlacasMinalbaMongo, PlacasMinalba, engine_1, engine_2, engine_3, session_1, session_2, session_3
+from models.models import Cliente, PlacasMinalbaMongo, PlacasMinalba, engine_1, session_1, session_2, session_3
 from sqlalchemy import exc
 from sqlalchemy import event
 from threading import Thread
@@ -9,18 +8,6 @@ import time
 
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:pRxI65oIubsdTlf@4.228.57.67:5432/db_vibra'
-app.config['SQLALCHEMY_DATABASE_URI_2'] = 'postgresql://postgres:pRxI65oIubsdTlf@4.228.57.67:5432/db_minalba_mongodb'
-app.config['SQLALCHEMY_DATABASE_URI_3'] = 'postgresql://postgres:pRxI65oIubsdTlf@4.228.57.67:5432/db_minalba'
-
-app.config['SQLALCHEMY_BINDS'] = {
-    'db_vibra': app.config['SQLALCHEMY_DATABASE_URI'],
-    'db_minalba_mongodb': app.config['SQLALCHEMY_DATABASE_URI_2'],
-    'db_minalba': app.config['SQLALCHEMY_DATABASE_URI_3'],
-}
-
-app.config['SQLALCHEMY_POOL_SIZE'] = 10
-app.config['SQLALCHEMY_POOL_TIMEOUT'] = 30
 
 with app.app_context():
     @event.listens_for(engine_1, "connect")

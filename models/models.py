@@ -1,47 +1,43 @@
-from flask_sqlalchemy import SQLAlchemy
+from sqlmodel import Field, SQLModel, create_engine, Session
+from sqlmodel.ext.asyncio.session import AsyncSession
 
-db = SQLAlchemy()
+#Constantes
+#------------------------------------------------------------------------------------------------------------------------------------------------------------------
+DATABASE_URL1 = 'postgresql://postgres:pRxI65oIubsdTlf@4.228.57.67:5432/db_vibra'
+DATABASE_URL2 = 'postgresql://postgres:pRxI65oIubsdTlf@4.228.57.67:5432/db_minalba_mongodb'
+DATABASE_URL3 = 'postgresql://postgres:pRxI65oIubsdTlf@4.228.57.67:5432/db_minalba'
 
-class Cliente(db.Model):
+engine_1 = create_engine(DATABASE_URL1)
+engine_2 = create_engine(DATABASE_URL2)
+engine_3 = create_engine(DATABASE_URL3)
+
+session_1 = Session(engine_1)
+session_2 = Session(engine_2)
+session_3 = Session(engine_3)
+
+class Cliente(SQLModel, table=True):
     __tablename__ = 'tb_clientes'
     __table_args__ = {'schema': 'sc_sap'}
 
-    codigo = db.Column(db.String(), primary_key=True)
-    nome = db.Column(db.String())
-    modelo_de_negocio = db.Column(db.String())
-    tipo_de_cliente = db.Column(db.String())
-
-    def __init__(self, codigo, nome, modelo_de_negocio, tipo_cliente):
-        self.codigo = codigo
-        self.nome = nome
-        self.modelo_de_negocio = modelo_de_negocio
-        self.tipo_cliente = tipo_cliente
+    codigo: str = Field(primary_key=True)
+    nome: str
+    modelo_de_negocio: str
+    tipo_de_cliente: str
 
 
-class PlacasMinalbaMongo(db.Model):
+class PlacasMinalbaMongo(SQLModel, table=True):
     __tablename__ = 'Viagens'
     __table_args__ = {'schema': 'public'}
-    __bind_key__ = 'db_minalba_mongodb'
-    
-    id = db.Column(db.String(1000), primary_key=True)
-    idVeiculo = db.Column(db.String(1000))
-    nomeEmbarcador = db.Column(db.String(1000))
 
-    def __init__(self, idVeiculo, id, nomeEmbarcador):
-        self.id = id
-        self.idVeiculo = idVeiculo
-        self.nomeEmbarcador = nomeEmbarcador
+    id: str = Field(primary_key=True)
+    idVeiculo: str
+    nomeEmbarcador: str
 
 
-class PlacasMinalba(db.Model):
+class PlacasMinalba(SQLModel, table=True):
     __tablename__ = 'tb_placas'
     __table_args__ = {'schema': 'sc_placa'}
-    __bind_key__ = 'db_minalba'
 
-    placa = db.Column(db.String(255), primary_key=True)
-    classificacao = db.Column(db.String(255))
-
-    def __init__(self, placa, classificacao):
-        self.placa = placa
-        self.classificacao = classificacao
-
+    placa: str = Field(primary_key=True)
+    classificacao: str
+ 
