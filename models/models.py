@@ -16,22 +16,7 @@ class Cliente(db.Model):
         self.nome = nome
         self.modelo_de_negocio = modelo_de_negocio
         self.tipo_cliente = tipo_cliente
-
-
-class PlacasMinalbaMongo(db.Model):
-    __tablename__ = 'Viagens'
-    __table_args__ = {'schema': 'public'}
-    __bind_key__ = 'db_minalba_mongodb'
-    
-    id = db.Column(db.String(1000), primary_key=True)
-    idVeiculo = db.Column(db.String(1000))
-    nomeEmbarcador = db.Column(db.String(1000))
-
-    def __init__(self, idVeiculo, id, nomeEmbarcador):
-        self.id = id
-        self.idVeiculo = idVeiculo
-        self.nomeEmbarcador = nomeEmbarcador
-
+        
 
 class PlacasMinalba(db.Model):
     __tablename__ = 'tb_placas'
@@ -44,3 +29,16 @@ class PlacasMinalba(db.Model):
     def __init__(self, placa, classificacao):
         self.placa = placa
         self.classificacao = classificacao
+
+
+class MsgMinalba(db.Model):
+    __tablename__ = 'tb_macro_dimensao'
+    __table_args__ = {'schema': 'sc_macros'}
+    __bind_key__ = 'db_minalba'
+
+    msg_original = db.Column(db.String(500), primary_key=True)
+    msg_corrigida = db.Column(db.String(500))
+
+    def __init__(self, msg_original, msg_corrigida):
+        self.msg_original = msg_original
+        self.msg_corrigida = msg_corrigida
