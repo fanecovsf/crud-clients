@@ -93,26 +93,6 @@ def edit_placa(placa):
     
     return render_template('edit-placas-minalba.html', placa=placa)
 
-#Util
-#------------------------------------------------------------------------------------------------------------------------------------------------------------
-def fill_placas_minalba():
-    while True:
-        time.sleep(7200)
-        placas_distintas = db.session.query(PlacasMinalbaMongo.idVeiculo).filter(PlacasMinalbaMongo.nomeEmbarcador != 'MINALBA' and PlacasMinalbaMongo.nomeEmbarcador != '').distinct().all()
-
-        for placa in placas_distintas:
-            placa_existente = PlacasMinalba.query.filter_by(placa=placa[0]).first()
-            if not placa_existente:
-                placa_nova = PlacasMinalba(placa=placa[0], classificacao=None)
-                db.session.add(placa_nova)
-
-        db.session.commit()
-
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=3000)
-
-
-#Constantes
-#------------------------------------------------------------------------------------------------------------------------------------------------------------
-THREAD_ATT = Thread(target=fill_placas_minalba)
