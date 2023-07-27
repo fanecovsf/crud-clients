@@ -22,9 +22,14 @@ db.init_app(app=app)
 with app.app_context():
     @event.listens_for(db.engine, "engine_connect")
     def on_connect(dbapi_connection, connection_record):
-        if isinstance(dbapi_connection, exc.DBAPIError):
+        if hasattr(dbapi_connection, 'ping'):
             cursor = dbapi_connection.cursor()
-            cursor.execute("SELECT 1")
+            try:
+                cursor.execute("SELECT 1")
+            except:
+                cursor.close()
+                dbapi_connection.close()
+                raise exc.DisconnectionError()
             cursor.close()
 
 
