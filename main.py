@@ -16,6 +16,8 @@ app.config['SQLALCHEMY_BINDS'] = {
 
 app.config['SQLALCHEMY_POOL_SIZE'] = 10
 app.config['SQLALCHEMY_POOL_TIMEOUT'] = 300
+app.config['SQLALCHEMY_MAX_OVERFLOW'] = 20
+app.config['SQLALCHEMY_POOL_RECYCLE'] = 1800
 
 db.init_app(app=app)
 
