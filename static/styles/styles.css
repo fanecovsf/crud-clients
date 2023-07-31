@@ -168,3 +168,20 @@ button:hover {
   background-color: #ffffff;
   color: #000000;
 }
+
+.btn-back {
+  font-size: small;
+  color: #000000;
+  text-decoration: none;
+  background-color: #f0f0f0;
+  border-radius: 50px;
+  margin-left: 16px;
+  padding: 4px 12px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-back:hover {
+  background-color: #268200;
+  color: #fff;
+}
