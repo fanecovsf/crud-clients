@@ -1,17 +1,18 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_paginate import Pagination, get_page_args
-from models.models import db, Cliente, MsgMinalba, PlacasMinalba
-from sqlalchemy import exc
-from sqlalchemy import event
+from models.models import db, Cliente, MsgMinalba, PlacasMinalba, Viagens, Checkpoints
+from sqlalchemy import exc, event, case
 
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:pRxI65oIubsdTlf@4.228.57.67:5432/db_vibra'
 app.config['SQLALCHEMY_DATABASE_URI_2'] = 'postgresql://postgres:pRxI65oIubsdTlf@4.228.57.67:5432/db_minalba'
+app.config['SQLALCHEMY_DATABASE_URI_3'] = 'postgresql://postgres:pRxI65oIubsdTlf@4.228.57.67:5432/BD01-VIBRA'
 
 app.config['SQLALCHEMY_BINDS'] = {
     'db_vibra': app.config['SQLALCHEMY_DATABASE_URI'],
     'db_minalba': app.config['SQLALCHEMY_DATABASE_URI_2'],
+    'BD01-VIBRA': app.config['SQLALCHEMY_DATABASE_URI_3']
 }
 
 app.config['SQLALCHEMY_POOL_SIZE'] = 10
@@ -38,6 +39,30 @@ with app.app_context():
 @app.route('/')
 def init():
     return 'Online'
+
+
+@app.route('/teste', methods=['GET'])
+def viagens():
+    operacao_expr = case(
+        (Viagens.idPlanoViagem.like('4%'), 'OUTBOUND'),
+        else_='INBOUND'
+    )
+
+    query = db.session.query(Checkpoints, Viagens.idPlanoViagem, operacao_expr.label('operacao')).join(Viagens, Checkpoints.uuidv == Viagens.uuidv).limit(100)
+    data_list = []
+
+    for checkpoint, idPlanoViagem, operacao in query:
+        
+        data = {
+            'checkpoint_id': checkpoint.id,
+            'checkpoint_uuid': checkpoint.uuidv,
+            'idPlanoViagem': idPlanoViagem,
+            'operacao': operacao
+        }
+
+        data_list.append(data)
+
+    return jsonify(data_list)
 
 
 @app.route('/clientes')
