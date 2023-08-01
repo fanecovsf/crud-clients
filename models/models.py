@@ -7,6 +7,8 @@ class SQLAlchemy(_BaseSQLAlchemy):
 
 db = SQLAlchemy()
 
+#Vibra
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Cliente(db.Model):
     __tablename__ = 'tb_clientes'
     __table_args__ = {'schema': 'sc_sap'}
@@ -23,6 +25,8 @@ class Cliente(db.Model):
         self.tipo_cliente = tipo_cliente
         
 
+#Minalba
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 class PlacasMinalba(db.Model):
     __tablename__ = 'tb_placas'
     __table_args__ = {'schema': 'sc_placa'}
