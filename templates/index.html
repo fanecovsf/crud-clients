@@ -22,7 +22,7 @@
           <div>
             <input
               type="text"
-              name="search"
+              name="search-name"
               placeholder="🔍 Digite o nome do cliente"
             />
           </div>
@@ -39,6 +39,7 @@
               <th>Nome</th>
               <th>Modelo de negócio</th>
               <th>Tipo de cliente</th>
+              <th>Operação</th>
               <th></th>
             </tr>
           </thead>
@@ -49,6 +50,7 @@
               <td>{{c.nome}}</td>
               <td>{{c.modelo_de_negocio}}</td>
               <td>{{c.tipo_de_cliente}}</td>
+              <td>{{ "Outbound" if c.outbound == True }}</td>
               <td>
                 <a href="/clientes/edit/{{c.codigo}}" class="edit-button">Editar</a>
               </td>

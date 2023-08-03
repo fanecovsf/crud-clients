@@ -1,9 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for
 from flask_paginate import Pagination, get_page_args
 from models.minalba import MsgMinalba, PlacasMinalba
-from models.vibra import Cliente, Viagens, Checkpoints
+from models.vibra import Cliente
 from db_config import db
-from sqlalchemy import exc, event, case
+from sqlalchemy import exc, event
 
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
@@ -20,7 +20,7 @@ app.config['SQLALCHEMY_BINDS'] = {
 app.config['SQLALCHEMY_POOL_SIZE'] = 10
 app.config['SQLALCHEMY_POOL_TIMEOUT'] = 300
 app.config['SQLALCHEMY_MAX_OVERFLOW'] = 20
-app.config['SQLALCHEMY_POOL_RECYCLE'] = 300
+app.config['SQLALCHEMY_POOL_RECYCLE'] = 1800
 
 db.init_app(app=app)
 
@@ -43,41 +43,17 @@ def init():
     return 'Online'
 
 
-@app.route('/teste', methods=['GET'])
-def viagens():
-    operacao_expr = case(
-        (Viagens.idPlanoViagem.like('4%'), 'OUTBOUND'),
-        else_='INBOUND'
-    )
-
-    query = db.session.query(Checkpoints, Viagens.idPlanoViagem, operacao_expr.label('operacao')).join(Viagens, Checkpoints.uuidv == Viagens.uuidv).limit(100)
-    data_list = []
-
-    for checkpoint, idPlanoViagem, operacao in query:
-        
-        data = {
-            'checkpoint_id': checkpoint.id,
-            'checkpoint_uuid': checkpoint.uuidv,
-            'idPlanoViagem': idPlanoViagem,
-            'operacao': operacao
-        }
-
-        data_list.append(data)
-
-    return jsonify(data_list)
-
-
 @app.route('/clientes')
 def table():
-    search_term = request.args.get('search')
+    search_term = request.args.get('search-name')
     page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page', per_page='100')
 
     if search_term:
-        clientes = db.session.query(Cliente).filter(Cliente.nome.ilike(f'%{search_term}%')).offset(offset).limit(per_page)
-        total = db.session.query(Cliente).filter(Cliente.nome.ilike(f'%{search_term}%')).count()
+        clientes = db.session.query(Cliente).filter(Cliente.nome.ilike(f'%{search_term}%')).filter_by(outbound=True).offset(offset).limit(per_page)
+        total = db.session.query(Cliente).filter(Cliente.nome.ilike(f'%{search_term}%')).filter_by(outbound=True).count()
     else:
-        clientes = db.session.query(Cliente).offset(offset).limit(per_page)
-        total = db.session.query(Cliente).count()
+        clientes = db.session.query(Cliente).filter_by(outbound=True).offset(offset).limit(per_page)
+        total = db.session.query(Cliente).filter_by(outbound=True).count()
 
     pagination = Pagination(page=page, total=total, record_name='clientes', per_page=per_page, css_framework='bootstrap4')
 
