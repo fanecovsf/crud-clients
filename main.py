@@ -48,12 +48,32 @@ def table():
     search_term = request.args.get('search-name')
     page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page', per_page='100')
 
-    if search_term:
-        clientes = db.session.query(Cliente).filter(Cliente.nome.ilike(f'%{search_term}%')).filter_by(outbound=True).offset(offset).limit(per_page)
-        total = db.session.query(Cliente).filter(Cliente.nome.ilike(f'%{search_term}%')).filter_by(outbound=True).count()
+    search_ope = request.args.get('drop')
+    print(search_ope)
+
+    if search_ope == 'outbound':
+        if search_term:
+            clientes = db.session.query(Cliente).filter(Cliente.nome.ilike(f'%{search_term}%')).filter_by(outbound=True).offset(offset).limit(per_page)
+            total = db.session.query(Cliente).filter(Cliente.nome.ilike(f'%{search_term}%')).filter_by(outbound=True).count()
+        else:
+            clientes = db.session.query(Cliente).filter_by(outbound=True).offset(offset).limit(per_page)
+            total = db.session.query(Cliente).filter_by(outbound=True).count()
+
+    elif search_ope == 'inbound':
+        if search_term:
+            clientes = db.session.query(Cliente).filter(Cliente.nome.ilike(f'%{search_term}%')).filter_by(outbound=False).offset(offset).limit(per_page)
+            total = db.session.query(Cliente).filter(Cliente.nome.ilike(f'%{search_term}%')).filter_by(outbound=False).count()
+        else:
+            clientes = db.session.query(Cliente).filter_by(outbound=False).offset(offset).limit(per_page)
+            total = db.session.query(Cliente).filter_by(outbound=False).count()  
+
     else:
-        clientes = db.session.query(Cliente).filter_by(outbound=True).offset(offset).limit(per_page)
-        total = db.session.query(Cliente).filter_by(outbound=True).count()
+        if search_term:
+            clientes = db.session.query(Cliente).filter(Cliente.nome.ilike(f'%{search_term}%')).offset(offset).limit(per_page)
+            total = db.session.query(Cliente).filter(Cliente.nome.ilike(f'%{search_term}%')).count()
+        else:
+            clientes = db.session.query(Cliente).offset(offset).limit(per_page)
+            total = db.session.query(Cliente).count()
 
     pagination = Pagination(page=page, total=total, record_name='clientes', per_page=per_page, css_framework='bootstrap4')
 
