@@ -29,6 +29,13 @@
           <div>
             <button type="submit">Pesquisar</button>
           </div>
+          <div>
+            <select name="drop" class="dropDown" id="drop">
+              <option value="" disabled selected>Selecione a operação</option>
+              <option value="inbound">Inbound</option>
+              <option value="outbound">Outbound</option>
+            </select>
+          </div>
         </form>
       </section>
       <section class="div-table">
@@ -50,7 +57,7 @@
               <td>{{c.nome}}</td>
               <td>{{c.modelo_de_negocio}}</td>
               <td>{{c.tipo_de_cliente}}</td>
-              <td>{{ "Outbound" if c.outbound == True }}</td>
+              <td>{{ "Outbound" if c.outbound == True else "Inbound" }}</td>
               <td>
                 <a href="/clientes/edit/{{c.codigo}}" class="edit-button">Editar</a>
               </td>
