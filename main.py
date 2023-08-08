@@ -49,7 +49,6 @@ def table():
     page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page', per_page='100')
 
     search_ope = request.args.get('drop')
-    print(search_ope)
 
     if search_ope == 'outbound':
         if search_term:
