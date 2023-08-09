@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="{{ url_for('static', filename='styles/styles.css') }}"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <title>Edição de produtos</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Edição de produtos</h1>
+      <section class="form-search">
+        <form
+          class="form-elements"
+          method="GET"
+          action="{{ url_for('produtos') }}"
+        >
+          <div>
+            <input
+              type="text"
+              name="search-name"
+              placeholder="🔍 Digite o nome do produto"
+            />
+          </div>
+          <div>
+            <button type="submit">Pesquisar</button>
+          </div>
+        </form>
+      </section>
+      <section class="div-table">
+        <table class="table-1">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Nome</th>
+              <th>Tipo</th>
+              <th>Grupo</th>
+              <th>Torre</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for p in produtos %}
+            <tr>
+              <td>{{p.produto_codigo}}</td>
+              <td>{{p.produto_nome}}</td>
+              <td>{{p.produto_tipo}}</td>
+              <td>{{ "" if p.produto_grupo == None else p.produto_grupo}}</td>
+              <td>{{ "Torre" if p.produto_torre == True else "Vibra" }}</td>
+              <td>
+                <a href="/produtos/edit/{{p.produto_codigo}}" class="edit-button">Editar</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </section>
+
+      <div class="pagination">{{ pagination.links }}</div>
+    </div>
+  </body>
+</html>

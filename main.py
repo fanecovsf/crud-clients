@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_paginate import Pagination, get_page_args
 from models.minalba import MsgMinalba, PlacasMinalba
-from models.vibra import Cliente
+from models.vibra import Cliente, Produto
 from db_config import db
 from sqlalchemy import exc, event
 
@@ -170,6 +170,51 @@ def edit_macros(msg):
     
     return render_template('edit-macros-minalba.html', macro=macro, msgs=msgs)
 
+
+@app.route('/produtos')
+def produtos():
+    query = Produto.query_filtered()
+    search_term = request.args.get('search-name')
+    page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page', per_page='100')
+
+    if search_term:
+        produtos = query.filter(Produto.produto_nome.ilike(f"%{search_term}%")).order_by(Produto.produto_codigo).offset(offset).limit(per_page)
+        total = query.filter(Produto.produto_nome.ilike(f"%{search_term}%")).count()
+
+    else:
+        produtos = query.order_by(Produto.produto_codigo).offset(offset).limit(per_page)
+        total = query.count()
+
+    pagination = Pagination(page=page, total=total, record_name='clientes', per_page=per_page, css_framework='bootstrap4')
+
+    return render_template('vibra-produtos.html', produtos=produtos, pagination=pagination)
+
+
+@app.route('/produtos/edit/<codigo>', methods=['GET', 'POST'])
+def edit_produto(codigo):
+    produto = db.session.get(Produto, codigo)
+    lista_grupos = Produto.group_list()
+
+    if request.method == 'POST':
+        if request.form['grupo_produto'] == 'None':
+            grupo = None
+
+        else:
+            grupo = request.form['grupo_produto']
+
+        produto.produto_grupo = grupo
+
+        if request.form['torre'] == 'Torre':
+            produto.produto_torre = True
+
+        else:
+            produto.produto_torre = False
+
+        db.session.commit()
+
+        return redirect(url_for('produtos'))
+    
+    return render_template('edit-produtos.html', produto=produto, lista_grupos=lista_grupos)
 
 
 if __name__ == '__main__':

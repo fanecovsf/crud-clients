@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', filename='styles/styles.css') }}" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <title>Editar produto {{produto.produto_nome}}</title>
+</head>
+<body>
+
+    <h1 style="text-align: center;">Editar produto {{produto.produto_nome}}</h1>
+    <section class="form-search">
+        <form action="/produtos/edit/{{ produto.produto_codigo }}" class="container-edit" method="post" >
+            <div class="row">
+                <div class="value-read">
+                    <div class="label">
+                        <label for="codigo" class="label-edit">Código:</label>
+                    </div>
+                    <div class="input-form">
+                        <input type="text" name="codigo" id="codigo" placeholder="Código" class="form-control" value="{{produto.produto_codigo}}" readonly>
+                    </div>
+                </div>
+                <div class="value-read">
+                    <div class="label">
+                        <label for="nome" class="label-edit">Nome:</label>
+                    </div>
+                    <div class="input-form">
+                        <input type="text" name="nome" id="nome" placeholder="Nome" class="form-control" value="{{produto.produto_nome}}" readonly>
+                    </div>
+                </div>
+                <div class="value">
+                    <div class="label">
+                        <label for="tipo" class="label-edit">Tipo:</label>
+                    </div>
+                    <div class="input-form">
+                        <input type="text" name="tipo" id="tipo" placeholder="Tipo" class="form-control" value="{{produto.produto_tipo}}" readonly>
+                    </div>
+                </div>
+                <div class="value">
+                    <div class="label">
+                        <label for="grupo_produto" class="label-edit">Grupo:</label>
+                    </div>
+                    <div class="input-form">
+                        <select name="grupo_produto" id="grupo_produto" class="form-control">
+                            {% for grupo in lista_grupos %}
+                            <option value="{{grupo}}" {% if produto.produto_grupo == grupo %}selected{% endif %}>{{grupo}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="value">
+                    <div class="label">
+                        <label for="torre" class="label-edit">Torre:</label>
+                    </div>
+                    <div class="input-form">
+                        <select name="torre" id="torre" class="form-control">
+                            <option value="Torre" {% if produto.produto_torre == True %}selected{% endif %}>Torre</option>
+                            <option value="Vibra" {% if produto.produto_torre == False %}selected{% endif %}>Vibra</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <a href="/produtos" class="btn-back">Voltar</a>
+                    <button type="submit" class="btn-btn-send">Enviar</button>
+                </div>
+            </div>
+        </form>
+    </section>
+    
+</body>
+</html>
