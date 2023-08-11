@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', filename='styles/styles.css') }}" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <title>Editar transportadora {{transportadora.transportadora_nome_sap}}</title>
+</head>
+<body>
+
+    <h1 style="text-align: center;">Editar transportadora {{transportadora.transportadora_nome_sap}}</h1>
+    <section class="form-search">
+        <form action="/transportadoras/edit/{{ transportadora.transportadora_codigo_sap }}" class="container-edit" method="post" >
+            <div class="row">
+                <div class="value-read">
+                    <div class="label">
+                        <label for="codigo" class="label-edit">Código SAP:</label>
+                    </div>
+                    <div class="input-form">
+                        <input type="text" name="codigo" id="codigo" placeholder="Código" class="form-control" value="{{transportadora.transportadora_codigo_sap}}" readonly>
+                    </div>
+                </div>
+                <div class="value-read">
+                    <div class="label">
+                        <label for="nome" class="label-edit">Nome:</label>
+                    </div>
+                    <div class="input-form">
+                        <input type="text" name="nome" id="nome" placeholder="Vazio" class="form-control" value="{{'' if transportadora.transportadora_nome_sap == None else transportadora.transportadora_nome_sap}}" readonly>
+                    </div>
+                </div>
+                <div class="value">
+                    <div class="label">
+                        <label for="tipo" class="label-edit">CNPJ:</label>
+                    </div>
+                    <div class="input-form">
+                        <input type="text" name="cnpj" id="cnpj" placeholder="Vazio" class="form-control" value="{{'' if transportadora.transportadora_cnpj == None else transportadora.transportadora_cnpj}}" readonly>
+                    </div>
+                </div>
+                <div class="value">
+                    <div class="label">
+                        <label for="tipo" class="label-edit">Grupo Atlas:</label>
+                    </div>
+                    <div class="input-form">
+                        <input type="text" name="grupo" id="grupo" placeholder="Grupo Atlas" class="form-control" value="{{'' if transportadora.transportadora_grupo_atlas == None else transportadora.transportadora_grupo_atlas}}">
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <a href="/transportadoras" class="btn-back">Voltar</a>
+                    <button type="submit" class="btn-btn-send">Enviar</button>
+                </div>
+            </div>
+        </form>
+    </section>
+    
+</body>
+</html>

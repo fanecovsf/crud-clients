@@ -52,3 +52,25 @@ class Produto(db.Model):
             lista_grupos.append(grupo.produto_grupo)
 
         return lista_grupos
+    
+
+class Transportadora(db.Model):
+    __tablename__ = 'tb_transportadoras'
+    __table_args__ = {'schema': 'sc_sap'}
+    __bind_key__ = 'db_vibra'
+
+    transportadora_codigo_sap = db.Column(db.String(), primary_key=True)
+    transportadora_nome_sap = db.Column(db.String())
+    transportadora_cnpj = db.Column(db.String())
+    transportadora_grupo_atlas = db.Column(db.String())
+
+    def __init__(self, transportadora_codigo_sap, transportadora_nome_sap, transportadora_cnpj, transportadora_grupo_atlas):
+        self.transportadora_codigo_sap = transportadora_codigo_sap #Filtro
+        self.transportadora_nome_sap = transportadora_nome_sap
+        self.transportadora_cnpj = transportadora_cnpj
+        self.transportadora_grupo_atlas = transportadora_grupo_atlas #Filtro
+
+    
+    @staticmethod
+    def query():
+        return db.session.query(Transportadora)

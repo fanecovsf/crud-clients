@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_paginate import Pagination, get_page_args
 from models.minalba import MsgMinalba, PlacasMinalba
-from models.vibra import Cliente, Produto
+from models.vibra import Cliente, Produto, Transportadora
 from db_config import db
 from sqlalchemy import exc, event
 
@@ -185,7 +185,7 @@ def produtos():
         produtos = query.order_by(Produto.produto_codigo).offset(offset).limit(per_page)
         total = query.count()
 
-    pagination = Pagination(page=page, total=total, record_name='clientes', per_page=per_page, css_framework='bootstrap4')
+    pagination = Pagination(page=page, total=total, record_name='produtos', per_page=per_page, css_framework='bootstrap4')
 
     return render_template('vibra-produtos.html', produtos=produtos, pagination=pagination)
 
@@ -215,6 +215,46 @@ def edit_produto(codigo):
         return redirect(url_for('produtos'))
     
     return render_template('edit-produtos.html', produto=produto, lista_grupos=lista_grupos)
+
+
+@app.route('/transportadoras')
+def transportadoras():
+    search_cod = request.args.get('search-cod')
+    search_grupo = request.args.get('search-grupo')
+    search_name = request.args.get('search-name')
+    page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page', per_page='100')
+
+    query = Transportadora.query()
+
+    if search_cod:
+        query = query.filter(Transportadora.transportadora_codigo_sap.ilike(f'%{search_cod}%'))
+
+    if search_grupo:
+        query = query.filter(Transportadora.transportadora_grupo_atlas.ilike(f'%{search_grupo}%'))
+
+    if search_name:
+        query = query.filter(Transportadora.transportadora_nome_sap.ilike(f'%{search_name}%'))
+
+    transportadoras = query.order_by(Transportadora.transportadora_codigo_sap).offset(offset).limit(per_page)
+    total = query.count()
+
+    pagination = Pagination(page=page, total=total, record_name='transportadoras', per_page=per_page, css_framework='bootstrap4')
+
+    return render_template('vibra-transportadoras.html', transportadoras=transportadoras, pagination=pagination)
+
+
+@app.route('/transportadoras/edit/<cod>', methods=['GET', 'POST'])
+def edit_transportadoras(cod):
+    transportadora = db.session.get(Transportadora, cod)
+
+    if request.method == 'POST':
+        transportadora.transportadora_grupo_atlas = request.form.get('grupo')
+        db.session.commit()
+
+        return redirect(url_for('transportadoras'))
+    
+    return render_template('edit-transportadoras.html', transportadora=transportadora)
+
 
 
 if __name__ == '__main__':

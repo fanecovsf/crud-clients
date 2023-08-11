@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="{{ url_for('static', filename='styles/styles.css') }}"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <title>Edição de transportadoras</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Edição de transportadoras</h1>
+      <section class="form-search">
+        <form
+          class="form-elements"
+          method="GET"
+          action="{{ url_for('transportadoras') }}"
+        >
+          <div>
+            <input
+              type="text"
+              name="search-cod"
+              placeholder="🔍 Digite o código SAP"
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              name="search-name"
+              placeholder="🔍 Digite o nome SAP"
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              name="search-grupo"
+              placeholder="🔍 Digite o grupo Atlas"
+            />
+          </div>
+          <div>
+            <button type="submit">Pesquisar</button>
+          </div>
+        </form>
+      </section>
+      <section class="div-table">
+        <table class="table-1">
+          <thead>
+            <tr>
+              <th>Código SAP</th>
+              <th>Nome</th>
+              <th>CNPJ</th>
+              <th>Grupo Atlas</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for t in transportadoras %}
+            <tr>
+              <td>{{t.transportadora_codigo_sap}}</td>
+              <td>{{"" if t.transportadora_nome_sap == None else t.transportadora_nome_sap}}</td>
+              <td>{{"" if t.transportadora_cnpj == None else t.transportadora_cnpj}}</td>
+              <td>{{"" if t.transportadora_grupo_atlas == None else t.transportadora_grupo_atlas}}</td>
+              <td>
+                <a href="/transportadoras/edit/{{t.transportadora_codigo_sap}}" class="edit-button">Editar</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </section>
+
+      <div class="pagination">{{ pagination.links }}</div>
+    </div>
+  </body>
+</html>
